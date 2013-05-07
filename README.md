@@ -40,7 +40,8 @@ xsd.done(function() {
 
 ## Example
 
-```var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
+```
+var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
 xsd.done(function() {
   $.get('http://alpha.example.com/index.html');
 });
