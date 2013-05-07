@@ -1,7 +1,7 @@
-jquery-cross-subdomain
+jQuery Cross Subdomain
 ======================
 
-Plugin to allow jquery ajax calls to be made a cross-subdomains
+This plugin allows jQuery to make cross-subdomain ajax calls.
 
 ## Installation
 
@@ -24,7 +24,11 @@ Finally, on the source server, link the plugin file after jQuery has loaded:
 
 ## Usage
 
-Call jQuery.xsubdomain(fullPath) with the full path to the jquery.xsubdomain.html file on the server you wish to make a cross-subdomain call to.  The call will return a jQuery promise object.  This is required since xsubdomain loads an iframe asynchronously.
+```
+$.xsubdomain(fullPath, [domain]);
+```
+
+Call xsubdomain with the full path to the jquery.xsubdomain.html file on the server you wish to make a cross-subdomain call to.  You can optionally pass in the domain which will be used to set document.domain.  If the domain is not provided, the function will make an educated guess based on location.hostname.  The call will return a jQuery promise object.  This is required since xsubdomain loads an iframe asynchronously.
 
 ```
 var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
