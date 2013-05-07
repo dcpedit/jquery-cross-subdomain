@@ -1,8 +1,7 @@
 {
   "name": "jquery-cross-subdomain",
   "version": "0.1.0",
-  "description": "High performance middleware framework",
-  "keywords": ["framework", "web", "middleware", "connect", "rack"],
+  "description": "Cross subdomain ajax support for jQuery",
   "repository": "https://github.com/dcpedit/jquery-cross-subdomain.git",
   "author": "Ming-Gih Lam<dcpedit@hotmail.com> (http://moobilee.com)",
   "dependencies": {
