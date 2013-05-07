@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript">
+!function() {
+  var host = location.search.match(/[?&]hostname=([^&]+)/);
+  if (host) {
+    document.domain = host[1];
+    parent.jQuery.xsubdomain.register(window);
+  }
+}();
+</script>
+</head>
+<body>
+</body>
+</html>

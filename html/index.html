@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cross Subdomain Test</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="jquery.xsubdomain.js"></script>
+  </head>
+  <body>
+    <h1>Cross Subdomain Test</h1>
+    <button id="test-button">Test</button>
+
+    <div id="log"></div>
+
+    <script>
+    !function($) {
+
+      // Setup Log output (optional)
+      $.ajaxPrefilter(function(opts) {
+        opts.success = function() { $('#log').append('<div>Success: '+opts.url+'</div>') }
+      });
+
+      // Setup cross subdomain calls
+      var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
+      xsd.done(function() {
+        $.get('http://alpha.example.com/index.html');
+      });
+
+      $('#test-button').on('click', function() {
+        xsd.done(function() {
+          $.get('http://alpha.example.com/index.html')
+        });
+      });
+
+      $.xsubdomain('http://beta.example.com/jquery.xsubdomain.html').done(function() {
+        $.get('http://beta.example.com/index.html')
+      });
+
+    }(jQuery);
+    </script>
+  </body>
+</html>
