@@ -37,9 +37,13 @@ var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
 The promise object can be used to attach callback functions which gets called once the iframe has finished loading.  This can be used to make the actual cross-subdomain ajax calls in your code.
 
 ```
-xsd.done(function() {
-  $.get('http://alpha.example.com/index.html');
-});
+xsd.done(callback);
+```
+
+If you don't want to use a promise object, you can also attach a callback by using the $.xsubdomain() function.  You will need to specify the domain that's associated with the callback, but if you leave it blank, it will use the first domain that was used:
+
+```
+$.xsubdomain(callback, [domain]);
 ```
 
 ## Example
@@ -49,6 +53,10 @@ var xsd = $.xsubdomain('http://alpha.example.com/jquery.xsubdomain.html');
 xsd.done(function() {
   $.get('http://alpha.example.com/index.html');
 });
+
+$.xsubdomain(function() {
+  $.get('http://alpha.example.com/index.html');
+}, 'alpha.example.com');
 
 $('#test-button').on('click', function() {
   xsd.done(function() {

@@ -8,10 +8,21 @@ function xdHostname(url) {
   if (parts && parts[1] != window.location.hostname) return parts[1];
 }
 
-$.xsubdomain = function(fullPath, domain) {
-  var xdhost;
+$.xsubdomain = function(arg1, domain) {
+  var fullPath, callback, xdhost;
 
-  xdhost = xdHostname(fullPath);
+  if (typeof arg1 == 'string') {
+    fullPath = arg1;
+    xdhost = xdHostname(fullPath);
+    if (!xdhost) return;
+  }
+  else if (typeof arg1 == 'function') {
+    callback = arg1;
+    xdhost = domain || (function() {
+      for (var i in _settings) return i;
+    })();
+    return xdhost ? _settings[xdhost].deferred.done(callback) : callback();
+  }
 
   // Check for duplicate loads
   if (_settings[xdhost] && _settings[xdhost].xhr) return _settings[xdhost].deferred.promise();
@@ -44,13 +55,17 @@ $.xsubdomain = function(fullPath, domain) {
   }
 
   // Check for duplicate loads
-  var iframeHTML = '<iframe src="' + fullPath + (fullPath.indexOf('?') >= 0 ? '&' : '?') + 'hostname=' + _settings.domain + '" style="width:0;height:0;display:none"></iframe>';
+  var iframeHTML = '<iframe src="' + fullPath.replace(/https?:/, '') + (fullPath.indexOf('?') >= 0 ? '&' : '?') + 'hostname=' + _settings.domain + '" style="width:0;height:0;display:none"></iframe>';
 
-  try {
-    $('body').append(iframeHTML);
+  if ($('body').length) {
+    $('body').prepend(iframeHTML);
   }
-  catch (e) {
-    $(function() {$('body').append(iframeHTML);});
+  else {
+    try {
+      document.write(iframeHTML);
+    } catch (e) {
+      $(function() {$('body').append(iframeHTML);});
+    }
   }
 
   return _settings[xdhost].deferred.promise();
@@ -79,6 +94,21 @@ $.xsubdomain.register = function(win) {
     createStandardXHR;
 
   _settings[host].deferred.resolve();
+
+  // for Prototype
+  if (window.Prototype && window.Ajax) {
+    Ajax.xd_getTransport = function() {
+      return Try.these(
+        function() {return new win.XMLHttpRequest()},
+        function() {return new win.ActiveXObject('Msxml2.XMLHTTP')},
+        function() {return new win.ActiveXObject('Microsoft.XMLHTTP')}
+      ) || false;
+    };
+
+    if (Ajax.xd_frameLoaded) {
+      Ajax.xd_frameLoaded();
+    }
+  }
 };
 
 }(jQuery);
